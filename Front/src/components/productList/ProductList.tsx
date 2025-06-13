@@ -195,172 +195,150 @@ const ProductList: React.FC = () => {
   }
 
   return (
-    <div>
-      <div className="mb4">
-        <h2 className="f2 tc dark-gray mb4">Listado de Productos OFFCORSS</h2>
-      </div>
+    <div className="product-list-container">
+      <h2 className="product-list-title">Listado de Productos OFFCORSS</h2>
 
       {/* Controles */}
-      <div className="mb4 flex flex-column flex-row-ns justify-between items-center">
-        <div className="relative flex-auto mw6-ns mb3 mb0-ns">
-          <Search className="absolute left-1 top-2 h1 w1 gray" />
+      <div className="product-controls">
+        <div className="product-search">
+          <Search />
           <input
             type="text"
             placeholder="Buscar por nombre, marca, ID o título..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-100 pl4 pr2 pv2 ba b--light-gray br2 input-reset outline-0 focus-b--blue"
           />
         </div>
         <button
           onClick={exportToCSV}
           disabled={selectedRows.size === 0}
-          className={`flex items-center pv2 ph3 br2 fw5 ${
-            selectedRows.size === 0
-              ? "bg-gray-300 dark-gray cursor-not-allowed" // background-gray-300, dark-gray, cursor-not-allowed
-              : "bg-green white hover-bg-dark-green" // background-green, white, hover-background-dark-green
-          }`}
+          className="export-btn"
         >
-          <Download size={16} className="mr2" />
+          <Download size={18} />
           Exportar CSV ({selectedRows.size})
         </button>
       </div>
 
       {/* Tabla */}
-      <div className="bg-white br3 shadow-2 overflow-hidden flex justify-center">
-        <div className="overflow-x-auto w-100">
-          <table className=" w-100">
-            <thead className="bg-blue white">
-              {" "}
-              {/* background-blue, white */}
-              <tr>
-                <th className="pa3 tl f6 fw6 ttu tracked">
-                  {" "}
-                  {/* padding-3, text-left, font-size-6, font-weight-6, text-transform-uppercase, letter-spacing-tracked */}
+      <div className="responsive-table-container">
+        <table className="product-table">
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  checked={
+                    selectedRows.size === currentItems.length &&
+                    currentItems.length > 0
+                  }
+                  onChange={handleSelectAll}
+                />
+              </th>
+              <th>Product ID</th>
+              <th>Brand</th>
+              <th>Product Title</th>
+              <th>Items</th>
+              <th>Images</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentItems.map((product, index) => (
+              <tr key={product.productId}>
+                <td>
                   <input
                     type="checkbox"
-                    checked={
-                      selectedRows.size === currentItems.length &&
-                      currentItems.length > 0
-                    }
-                    onChange={handleSelectAll}
-                    className="mr2" // margin-right-2
+                    checked={selectedRows.has(product.productId)}
+                    onChange={() => handleRowSelect(product.productId)}
                   />
-                </th>
-                <th className="pa3 tl f6 fw6 ttu tracked">Product ID</th>
-                <th className="pa3 tl f6 fw6 ttu tracked">Brand</th>
-                <th className="pa3 tl f6 fw6 ttu tracked">Product Title</th>
-                <th className="pa3 tl f6 fw6 ttu tracked">Items</th>
-                <th className="pa3 tl f6 fw6 ttu tracked">Images</th>
-                <th className="pa3 tl f6 fw6 ttu tracked">Acciones</th>
-              </tr>
-            </thead>
-            <tbody className="lh-copy">
-              {" "}
-              {/* line-height-copy */}
-              {currentItems.map((product, index) => (
-                <tr
-                  onClick={() => handleViewDetail(product)}
-                  key={product.productId}
-                  className={`bb b--light-gray ${
-                    index % 2 === 0 ? "bg-white" : "bg-light-gray"
-                  } hover-bg-washed-blue`} // border-bottom, border-light-gray, background-white/light-gray, hover-background-washed-blue
-                >
-                  <td className="pa3 nowrap">
-                    {" "}
-                    {/* padding-3, no-wrap */}
-                    <input
-                      type="checkbox"
-                      checked={selectedRows.has(product.productId)}
-                      onChange={() => handleRowSelect(product.productId)}
-                      className="mr2" // margin-right-2
+                </td>
+                <td>
+                  <span className="badge">{product.productId}</span>
+                </td>
+                <td>
+                  <img
+                    src={product.brandImageUrl}
+                    alt={product.brand}
+                    className="product-image"
+                    style={{
+                      width: "3rem",
+                      height: "2rem",
+                      objectFit: "contain",
+                    }}
+                  />
+                </td>
+                <td>
+                  <div
+                    title={product.productTitle}
+                    style={{
+                      maxWidth: 180,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {product.productTitle}
+                  </div>
+                </td>
+                <td>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "0.25rem",
+                    }}
+                  >
+                    {product.items.map((item, itemIndex) => (
+                      <span
+                        key={itemIndex}
+                        className="badge"
+                        style={{
+                          background: "#dbeafe",
+                          color: "#2563eb",
+                        }}
+                      >
+                        {item.itemId}
+                      </span>
+                    ))}
+                  </div>
+                </td>
+                <td>
+                  {product.itemsImages.length > 0 && (
+                    <img
+                      src={product.itemsImages[0]}
+                      alt={product.productName}
+                      className="product-image"
                     />
-                  </td>
-                  <td className="pa3 nowrap">
-                    {" "}
-                    {/* padding-3, no-wrap */}
-                    <span className="dib pv1 ph2 br-pill bg-light-gray dark-gray f7 fw6">
-                      {" "}
-                      {/* display-inline-block, padding-vertical-1, padding-horizontal-2, border-radius-pill, background-light-gray, dark-gray, font-size-7, font-weight-6 */}
-                      {product.productId}
-                    </span>
-                  </td>
-                  <td className="pa3 nowrap">
-                    <div className="flex items-center">
-                      {" "}
-                      {/* flex, items-center */}
-                      <img
-                        src={product.brandImageUrl}
-                        alt={product.brand}
-                        className="h2 w3 object-contain mr2" // height-2, width-3, object-contain, margin-right-2
-                      />
-                    </div>
-                  </td>
-                  <td className="pa3">
-                    <div
-                      className="mw5 truncate" // max-width-5, truncate
-                      title={product.productTitle}
-                    >
-                      {product.productTitle}
-                    </div>
-                  </td>
-                  <td className="pa3">
-                    <div className="flex flex-wrap">
-                      {" "}
-                      {/* flex, flex-wrap */}
-                      {product.items.map((item, itemIndex) => (
-                        <span
-                          key={itemIndex}
-                          className="dib pv1 ph2 br1 f7 bg-blue-100 blue mr1 mb1" // display-inline-block, padding-vertical-1, padding-horizontal-2, border-radius-1, font-size-7, background-blue-100, blue, margin-right-1, margin-bottom-1
-                        >
-                          {item.itemId}
-                        </span>
-                      ))}
-                    </div>
-                  </td>
-                  <td className="pa3 nowrap">
-                    {product.itemsImages.length > 0 && (
-                      <img
-                        src={product.itemsImages[0]}
-                        alt={product.productName}
-                        className="h3 w3 cover" // height-3, width-3, object-fit-cover
-                      />
-                    )}
-                  </td>
-                  <td className="pa3 nowrap">
-                    <button
-                      onClick={() => handleViewDetail(product)}
-                      className="blue hover-bg-lightest-blue pa2 br2 transition-colors" // blue, hover-background-lightest-blue, padding-2, border-radius-2, transition-colors (note: transition-colors is not a direct Tachyons class, but a common practice for hover effects)
-                    >
-                      <Eye size={16} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  )}
+                </td>
+                <td>
+                  <button
+                    onClick={() => handleViewDetail(product)}
+                    className="actions-btn"
+                    title="Ver detalle"
+                  >
+                    <Eye size={18} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Paginación */}
       {totalPages > 1 && (
         <div className="mt4 flex items-center justify-between">
-          {" "}
-          {/* margin-top-4, flex, items-center, justify-between */}
           <div className="f6 gray">
-            {" "}
-            {/* font-size-6, gray */}
             Mostrando {indexOfFirstItem + 1} -{" "}
             {Math.min(indexOfLastItem, filteredProducts.length)} de{" "}
             {filteredProducts.length} productos
           </div>
           <div className="flex items-center">
-            {" "}
-            {/* flex, items-center */}
             <button
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
-              className="pa2 br2 ba b--light-gray disabled-o-50 disabled-not-allowed hover-bg-near-white mr1" // padding-2, border-radius-2, border, border-light-gray, opacity-50 (disabled), cursor-not-allowed (disabled), hover-background-near-white, margin-right-1
+              className="pa2 br2 ba b--light-gray disabled-o-50 disabled-not-allowed hover-bg-near-white mr1"
             >
               <ChevronsLeft size={16} />
             </button>
@@ -379,10 +357,9 @@ const ProductList: React.FC = () => {
                   key={pageNumber}
                   onClick={() => setCurrentPage(pageNumber)}
                   className={`ph3 pv2 br2 ba mr1 ${
-                    // padding-horizontal-3, padding-vertical-2, border-radius-2, border, margin-right-1
                     pageNumber === currentPage
-                      ? "bg-blue white b--blue" // background-blue, white, border-blue
-                      : "b--light-gray hover-bg-near-white" // border-light-gray, hover-background-near-white
+                      ? "bg-blue white b--blue"
+                      : "b--light-gray hover-bg-near-white"
                   }`}
                 >
                   {pageNumber}

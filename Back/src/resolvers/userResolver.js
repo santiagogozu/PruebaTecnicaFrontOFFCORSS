@@ -1,5 +1,8 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+const SECRET = "tu_clave_secreta"; // Usa una variable de entorno en producción
 
 const resolvers = {
   Query: {
@@ -11,7 +14,32 @@ const resolvers = {
       if (!user) throw new Error("Usuario no encontrado");
       const isValid = await bcrypt.compare(password, user.password);
       if (!isValid) throw new Error("Contraseña incorrecta");
-      return "Login exitoso"; // Aquí podrías retornar un token JWT
+      // Retorna token y datos del usuario
+      const token = jwt.sign(
+        {
+          id: user.id,
+          username: user.username,
+          name: user.name,
+          lastName: user.lastName,
+          email: user.email,
+          userType: user.userType,
+          createDate: user.createDate,
+        },
+        SECRET,
+        {expiresIn: "1h"}
+      );
+      return {
+        token,
+        user: {
+          id: user.id,
+          username: user.username,
+          name: user.name,
+          lastName: user.lastName,
+          email: user.email,
+          userType: user.userType,
+          createDate: user.createDate,
+        },
+      };
     },
   },
   Mutation: {

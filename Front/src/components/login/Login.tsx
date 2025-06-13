@@ -3,37 +3,48 @@ import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {useLazyQuery, gql} from "@apollo/client";
 import {Container, Row, Col, Card, Form, Button} from "react-bootstrap";
-
 import "./Login.css";
+import {useAuth} from "../../context/AuthContext";
 
 const LOGIN = gql`
-  query Login($userName: String!, $password: String!) {
-    login(username: $userName, password: $password)
+  query Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      token
+      user {
+        id
+        username
+        createDate
+        name
+        lastName
+        email
+        userType
+      }
+    }
   }
 `;
 
 export default function Login() {
   const [login] = useLazyQuery(LOGIN);
+  const {setUser, setToken} = useAuth();
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
-    console.log("Entra a handleLogin");
-
     e.preventDefault();
     try {
-      const response = await login({variables: {userName, password}});
-      console.log("response ---- ", response);
-
-      const token = response.data?.login;
-      if (token) {
+      const response = await login({variables: {username: userName, password}});
+      const result = response.data?.login;
+      if (result && result.token && result.user) {
+        setUser(result.user);
+        setToken(result.token);
+        localStorage.setItem("token", result.token);
         navigate("/dashboard");
       } else {
-        Swal.fire("Error", "Correo o contraseña inválida", "error");
+        Swal.fire("Error", "Usuario o contraseña inválidos", "error");
       }
     } catch {
-      Swal.fire("Error", "Correo o contraseña inválida", "error");
+      Swal.fire("Error", "Usuario o contraseña inválidos", "error");
     }
   };
 
@@ -54,7 +65,7 @@ export default function Login() {
               <Form onSubmit={handleLogin}>
                 <Form.Group className="mb-3">
                   <Form.Control
-                    placeholder="Correo electrónico"
+                    placeholder="Usuario"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                     className="py-2"

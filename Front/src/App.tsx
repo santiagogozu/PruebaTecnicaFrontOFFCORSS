@@ -6,17 +6,22 @@ import Dashboard from "./pages/Dashboard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProductDetail from "./components/productDetail/ProductDetail";
 import "tachyons/css/tachyons.min.css";
+import {AuthProvider} from "./context/AuthContext";
+import UserDetail from "./components/user/UserDetail";
 
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/producto/:id" element={<ProductDetail />} />
-        </Routes>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/producto/:id" element={<ProductDetail />} />
+            <Route path="/usuario" element={<UserDetail />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
     </ApolloProvider>
   );
 }

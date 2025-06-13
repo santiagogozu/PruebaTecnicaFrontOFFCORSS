@@ -10,9 +10,14 @@ const typeDefs = gql`
     userType: String!
   }
 
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
   type Query {
     getUsers: [User]
-    login(username: String!, password: String!): String
+    login(username: String!, password: String!): AuthPayload
   }
 
   type Mutation {
