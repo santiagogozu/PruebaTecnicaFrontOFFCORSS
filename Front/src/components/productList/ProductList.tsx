@@ -9,6 +9,7 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import "./ProductList.css";
+import {useNavigate} from "react-router-dom";
 
 interface Product {
   productId: string;
@@ -38,11 +39,8 @@ const ProductList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
-  const [showDetail, setShowDetail] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
-  const [animatingOut, setAnimatingOut] = useState(false);
+  const [itemsPerPage] = useState(5);
+  const navigate = useNavigate();
 
   // Obtener datos de la API
   useEffect(() => {
@@ -51,7 +49,7 @@ const ProductList: React.FC = () => {
         const response = await fetch("http://localhost:4000/api/products");
         const data = await response.json();
 
-        const mappedProducts = data.map((product: any) => ({
+        const mappedProducts = data.map((product: Product) => ({
           productId: product.productId,
           productName: product.productName,
           productTitle: product.productTitle || product.productName,
@@ -174,26 +172,8 @@ const ProductList: React.FC = () => {
     document.body.removeChild(link);
   };
 
-  // Reemplazar función handleViewDetail
   const handleViewDetail = (product: Product) => {
-    if (expandedRowId === product.productId) {
-      setAnimatingOut(true);
-      setTimeout(() => {
-        setExpandedRowId(null);
-        setShowDetail(false);
-        setAnimatingOut(false);
-      }, 300); // Debe coincidir con la duración de la transición en CSS
-    } else {
-      setExpandedRowId(product.productId);
-      setSelectedProduct(product);
-      setShowDetail(true);
-      setAnimatingOut(false);
-    }
-  };
-
-  // Imprimir detalle
-  const handlePrint = () => {
-    window.print();
+    navigate(`/producto/${product.productId}`, {state: {product}});
   };
 
   if (loading) {
@@ -215,46 +195,48 @@ const ProductList: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          Listado de Productos OFFCORSS
-        </h2>
+    <div>
+      <div className="mb4">
+        <h2 className="f2 tc dark-gray mb4">Listado de Productos OFFCORSS</h2>
       </div>
 
       {/* Controles */}
-      <div className="mb-6 flex flex-col md:flex-row gap-4 justify-between items-center">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+      <div className="mb4 flex flex-column flex-row-ns justify-between items-center">
+        <div className="relative flex-auto mw6-ns mb3 mb0-ns">
+          <Search className="absolute left-1 top-2 h1 w1 gray" />
           <input
             type="text"
             placeholder="Buscar por nombre, marca, ID o título..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-100 pl4 pr2 pv2 ba b--light-gray br2 input-reset outline-0 focus-b--blue"
           />
         </div>
         <button
           onClick={exportToCSV}
           disabled={selectedRows.size === 0}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium ${
+          className={`flex items-center pv2 ph3 br2 fw5 ${
             selectedRows.size === 0
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-green-600 text-white hover:bg-green-700"
+              ? "bg-gray-300 dark-gray cursor-not-allowed" // background-gray-300, dark-gray, cursor-not-allowed
+              : "bg-green white hover-bg-dark-green" // background-green, white, hover-background-dark-green
           }`}
         >
-          <Download size={16} />
+          <Download size={16} className="mr2" />
           Exportar CSV ({selectedRows.size})
         </button>
       </div>
 
       {/* Tabla */}
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden flex justify-center">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 mx-auto">
-            <thead className="bg-blue-600">
+      <div className="bg-white br3 shadow-2 overflow-hidden flex justify-center">
+        <div className="overflow-x-auto w-100">
+          <table className=" w-100">
+            <thead className="bg-blue white">
+              {" "}
+              {/* background-blue, white */}
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                <th className="pa3 tl f6 fw6 ttu tracked">
+                  {" "}
+                  {/* padding-3, text-left, font-size-6, font-weight-6, text-transform-uppercase, letter-spacing-tracked */}
                   <input
                     type="checkbox"
                     checked={
@@ -262,253 +244,98 @@ const ProductList: React.FC = () => {
                       currentItems.length > 0
                     }
                     onChange={handleSelectAll}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mr2" // margin-right-2
                   />
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Product ID
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Brand
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Product Title
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Items
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Images
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Acciones
-                </th>
+                <th className="pa3 tl f6 fw6 ttu tracked">Product ID</th>
+                <th className="pa3 tl f6 fw6 ttu tracked">Brand</th>
+                <th className="pa3 tl f6 fw6 ttu tracked">Product Title</th>
+                <th className="pa3 tl f6 fw6 ttu tracked">Items</th>
+                <th className="pa3 tl f6 fw6 ttu tracked">Images</th>
+                <th className="pa3 tl f6 fw6 ttu tracked">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="lh-copy">
+              {" "}
+              {/* line-height-copy */}
               {currentItems.map((product, index) => (
-                <React.Fragment key={product.productId}>
-                  <tr className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <input
-                        type="checkbox"
-                        checked={selectedRows.has(product.productId)}
-                        onChange={() => handleRowSelect(product.productId)}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                <tr
+                  onClick={() => handleViewDetail(product)}
+                  key={product.productId}
+                  className={`bb b--light-gray ${
+                    index % 2 === 0 ? "bg-white" : "bg-light-gray"
+                  } hover-bg-washed-blue`} // border-bottom, border-light-gray, background-white/light-gray, hover-background-washed-blue
+                >
+                  <td className="pa3 nowrap">
+                    {" "}
+                    {/* padding-3, no-wrap */}
+                    <input
+                      type="checkbox"
+                      checked={selectedRows.has(product.productId)}
+                      onChange={() => handleRowSelect(product.productId)}
+                      className="mr2" // margin-right-2
+                    />
+                  </td>
+                  <td className="pa3 nowrap">
+                    {" "}
+                    {/* padding-3, no-wrap */}
+                    <span className="dib pv1 ph2 br-pill bg-light-gray dark-gray f7 fw6">
+                      {" "}
+                      {/* display-inline-block, padding-vertical-1, padding-horizontal-2, border-radius-pill, background-light-gray, dark-gray, font-size-7, font-weight-6 */}
+                      {product.productId}
+                    </span>
+                  </td>
+                  <td className="pa3 nowrap">
+                    <div className="flex items-center">
+                      {" "}
+                      {/* flex, items-center */}
+                      <img
+                        src={product.brandImageUrl}
+                        alt={product.brand}
+                        className="h2 w3 object-contain mr2" // height-2, width-3, object-contain, margin-right-2
                       />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                        {product.productId}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <img
-                          src={product.brandImageUrl}
-                          alt={product.brand}
-                          className="h-8 w-12 object-contain mr-2"
-                        />
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div
-                        className="max-w-xs truncate"
-                        title={product.productTitle}
-                      >
-                        {product.productTitle}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex flex-wrap gap-1">
-                        {product.items.map((item, itemIndex) => (
-                          <span
-                            key={itemIndex}
-                            className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800"
-                          >
-                            {item.itemId}
-                          </span>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {product.itemsImages.length > 0 && (
-                        <img
-                          src={product.itemsImages[0]}
-                          alt={product.productName}
-                          className="product-image"
-                        />
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <button
-                        onClick={() => handleViewDetail(product)}
-                        className="text-blue-600 hover:text-blue-900 hover:bg-blue-50 p-2 rounded-lg transition-colors"
-                      >
-                        <Eye size={16} />
-                      </button>
-                    </td>
-                  </tr>
-                  {showDetail && expandedRowId === product.productId && (
-                    <tr>
-                      <td colSpan={7} className="p-0">
-                        <div className="detail-expand-container expanded-row-content">
-                          {selectedProduct && (
-                            <div className="bg-blue-600 p-4 rounded-t-lg flex justify-between items-center">
-                              <h3 className="text-xl font-bold">
-                                Detalle del Producto
-                              </h3>
-                              <button
-                                onClick={() => {
-                                  setShowDetail(false);
-                                  setExpandedRowId(null);
-                                }}
-                                className="hover:text-gray-200 text-2xl"
-                              >
-                                ×
-                              </button>
-                            </div>
-                          )}
-
-                          {selectedProduct && (
-                            <div className="detail-expand-grid">
-                              <div>
-                                {selectedProduct.itemsImages.length > 0 && (
-                                  <img
-                                    src={selectedProduct?.itemsImages[0]}
-                                    alt={selectedProduct?.productName}
-                                    className="product-image"
-                                  />
-                                )}
-                              </div>
-                              <div>
-                                <div className="bg-gray-50 p-4 rounded-lg">
-                                  <h4 className="text-xl font-bold mb-4">
-                                    {selectedProduct?.productName}
-                                  </h4>
-                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                    <div>
-                                      <strong>ID:</strong>{" "}
-                                      {selectedProduct?.productId}
-                                    </div>
-                                    <div>
-                                      <strong>Marca:</strong>{" "}
-                                      {selectedProduct?.brand}
-                                    </div>
-                                    <div className="md:col-span-2">
-                                      <strong>Título:</strong>{" "}
-                                      {selectedProduct?.productTitle}
-                                    </div>
-                                    <div>
-                                      <strong>Categorías:</strong>{" "}
-                                      {selectedProduct?.categories?.join(", ")}
-                                    </div>
-                                    <div>
-                                      <strong>Color:</strong>{" "}
-                                      {selectedProduct?.Color?.join(", ")}
-                                    </div>
-                                    <div>
-                                      <strong>Género:</strong>{" "}
-                                      {selectedProduct?.Género?.join(", ")}
-                                    </div>
-                                    <div>
-                                      <strong>Línea:</strong>{" "}
-                                      {selectedProduct?.linea?.join(", ")}
-                                    </div>
-                                    <div className="md:col-span-2">
-                                      <strong>Fecha de Lanzamiento:</strong>{" "}
-                                      {new Date(
-                                        selectedProduct.releaseDate
-                                      ).toLocaleDateString()}
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div className="mb-6">
-                                  <div className="bg-gray-50 p-4 rounded-lg">
-                                    <h5 className="font-bold mb-2">
-                                      Descripción
-                                    </h5>
-                                    <p className="text-gray-700">
-                                      {selectedProduct?.description}
-                                    </p>
-                                  </div>
-                                </div>
-
-                                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                                  <div className="bg-gray-50 p-4 rounded-lg">
-                                    <h5 className="font-bold mb-2">Items</h5>
-                                    <div className="flex flex-wrap gap-2">
-                                      {selectedProduct.items.map(
-                                        (item, index) => (
-                                          <span
-                                            key={index}
-                                            className="inline-flex items-center px-2 py-1 rounded text-sm font-medium bg-blue-100 text-blue-800"
-                                          >
-                                            {item.itemId}
-                                          </span>
-                                        )
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="bg-gray-50 p-4 rounded-lg">
-                                    <h5 className="font-bold mb-2">Imágenes</h5>
-                                    <div className="flex flex-wrap gap-2">
-                                      {selectedProduct?.itemsImages.map(
-                                        (img, index) => (
-                                          <img
-                                            key={index}
-                                            src={img}
-                                            alt={`${
-                                              selectedProduct.productName
-                                            } ${index + 1}`}
-                                            className="product-image"
-                                          />
-                                        )
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {selectedProduct?.cuidados && (
-                                  <div className="mb-6">
-                                    <div className="bg-gray-50 p-4 rounded-lg">
-                                      <h5 className="font-bold mb-2">
-                                        Cuidados
-                                      </h5>
-                                      <ul className="list-disc list-inside text-sm space-y-1">
-                                        {selectedProduct.cuidados.map(
-                                          (cuidado, index) => (
-                                            <li key={index}>{cuidado}</li>
-                                          )
-                                        )}
-                                      </ul>
-                                    </div>
-                                  </div>
-                                )}
-
-                                {selectedProduct?.origen && (
-                                  <div className="mb-6">
-                                    <div className="bg-gray-50 p-4 rounded-lg">
-                                      <h5 className="font-bold mb-2">Origen</h5>
-                                      <ul className="list-disc list-inside text-sm space-y-1">
-                                        {selectedProduct.origen.map(
-                                          (orig, index) => (
-                                            <li key={index}>{orig}</li>
-                                          )
-                                        )}
-                                      </ul>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
+                    </div>
+                  </td>
+                  <td className="pa3">
+                    <div
+                      className="mw5 truncate" // max-width-5, truncate
+                      title={product.productTitle}
+                    >
+                      {product.productTitle}
+                    </div>
+                  </td>
+                  <td className="pa3">
+                    <div className="flex flex-wrap">
+                      {" "}
+                      {/* flex, flex-wrap */}
+                      {product.items.map((item, itemIndex) => (
+                        <span
+                          key={itemIndex}
+                          className="dib pv1 ph2 br1 f7 bg-blue-100 blue mr1 mb1" // display-inline-block, padding-vertical-1, padding-horizontal-2, border-radius-1, font-size-7, background-blue-100, blue, margin-right-1, margin-bottom-1
+                        >
+                          {item.itemId}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="pa3 nowrap">
+                    {product.itemsImages.length > 0 && (
+                      <img
+                        src={product.itemsImages[0]}
+                        alt={product.productName}
+                        className="h3 w3 cover" // height-3, width-3, object-fit-cover
+                      />
+                    )}
+                  </td>
+                  <td className="pa3 nowrap">
+                    <button
+                      onClick={() => handleViewDetail(product)}
+                      className="blue hover-bg-lightest-blue pa2 br2 transition-colors" // blue, hover-background-lightest-blue, padding-2, border-radius-2, transition-colors (note: transition-colors is not a direct Tachyons class, but a common practice for hover effects)
+                    >
+                      <Eye size={16} />
+                    </button>
+                  </td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -517,28 +344,33 @@ const ProductList: React.FC = () => {
 
       {/* Paginación */}
       {totalPages > 1 && (
-        <div className="mt-6 flex items-center justify-between">
-          <div className="text-sm text-gray-700">
+        <div className="mt4 flex items-center justify-between">
+          {" "}
+          {/* margin-top-4, flex, items-center, justify-between */}
+          <div className="f6 gray">
+            {" "}
+            {/* font-size-6, gray */}
             Mostrando {indexOfFirstItem + 1} -{" "}
             {Math.min(indexOfLastItem, filteredProducts.length)} de{" "}
             {filteredProducts.length} productos
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center">
+            {" "}
+            {/* flex, items-center */}
             <button
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
-              className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="pa2 br2 ba b--light-gray disabled-o-50 disabled-not-allowed hover-bg-near-white mr1" // padding-2, border-radius-2, border, border-light-gray, opacity-50 (disabled), cursor-not-allowed (disabled), hover-background-near-white, margin-right-1
             >
               <ChevronsLeft size={16} />
             </button>
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="pa2 br2 ba b--light-gray disabled-o-50 disabled-not-allowed hover-bg-near-white mr1"
             >
               <ChevronLeft size={16} />
             </button>
-
             {[...Array(Math.min(5, totalPages))].map((_, index) => {
               const pageNumber =
                 Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + index;
@@ -546,30 +378,30 @@ const ProductList: React.FC = () => {
                 <button
                   key={pageNumber}
                   onClick={() => setCurrentPage(pageNumber)}
-                  className={`px-3 py-2 rounded-lg border ${
+                  className={`ph3 pv2 br2 ba mr1 ${
+                    // padding-horizontal-3, padding-vertical-2, border-radius-2, border, margin-right-1
                     pageNumber === currentPage
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "border-gray-300 hover:bg-gray-50"
+                      ? "bg-blue white b--blue" // background-blue, white, border-blue
+                      : "b--light-gray hover-bg-near-white" // border-light-gray, hover-background-near-white
                   }`}
                 >
                   {pageNumber}
                 </button>
               );
             })}
-
             <button
               onClick={() =>
                 setCurrentPage(Math.min(totalPages, currentPage + 1))
               }
               disabled={currentPage === totalPages}
-              className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="pa2 br2 ba b--light-gray disabled-o-50 disabled-not-allowed hover-bg-near-white mr1"
             >
               <ChevronRight size={16} />
             </button>
             <button
               onClick={() => setCurrentPage(totalPages)}
               disabled={currentPage === totalPages}
-              className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="pa2 br2 ba b--light-gray disabled-o-50 disabled-not-allowed hover-bg-near-white"
             >
               <ChevronsRight size={16} />
             </button>
