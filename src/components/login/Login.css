@@ -1,12 +1,3 @@
-/* body {
-  height: 100vh;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #78ff95;
-} */
-
 .login-container {
   display: flex;
   flex-direction: column;

@@ -180,7 +180,6 @@ const ProductList: React.FC = () => {
     <div className="product-list-container">
       <h2 className="product-list-title">Listado de Productos OFFCORSS</h2>
 
-      {/* Controles */}
       <div className="product-controls">
         <div className="product-search">
           <Search />
@@ -201,7 +200,6 @@ const ProductList: React.FC = () => {
         </button>
       </div>
 
-      {/* Tabla */}
       <div className="responsive-table-container">
         <table className="product-table">
           <thead>
@@ -308,7 +306,6 @@ const ProductList: React.FC = () => {
         </table>
       </div>
 
-      {/* Paginación */}
       {totalPages > 1 && (
         <div className="mt4 flex items-center justify-between">
           <div className="f6 gray">

@@ -1,27 +1,11 @@
 import Swal from "sweetalert2";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {useLazyQuery, gql} from "@apollo/client";
+import {useLazyQuery} from "@apollo/client";
 import {Container, Row, Col, Card, Form, Button} from "react-bootstrap";
 import "./Login.css";
 import {useAuth} from "../../context/AuthContext";
-
-const LOGIN = gql`
-  query Login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      token
-      user {
-        id
-        username
-        createDate
-        name
-        lastName
-        email
-        userType
-      }
-    }
-  }
-`;
+import {LOGIN} from "../../graphql/authQueries";
 
 export default function Login() {
   const [login] = useLazyQuery(LOGIN);

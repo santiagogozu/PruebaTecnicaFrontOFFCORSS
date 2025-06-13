@@ -29,7 +29,6 @@ function App() {
             />
             <Route path="/producto/:id" element={<ProductDetail />} />
             <Route path="/usuario" element={<UserDetail />} />
-            {/* Redirige cualquier ruta no encontrada a /login */}
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Router>

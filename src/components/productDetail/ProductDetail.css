@@ -6,7 +6,7 @@
 
 
 .gap-custom > * {
-  margin-right: 1.5rem; /* O el tamaño de gap que desees */
+  margin-right: 1.5rem;
   margin-bottom: 1.5rem;
 }
 .gap-custom > *:last-child {
@@ -20,7 +20,6 @@
   margin-right: 0;
 }
 
-/* Para flex-wrap, para evitar margen extra al final de la línea */
 .gap-custom.flex-wrap > * {
     margin-right: 1.5rem;
     margin-bottom: 1.5rem;
@@ -29,4 +28,3 @@
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
 }
-/* Esto es una simplificación, para un control más fino, podrías usar selectores de :not(:last-child) */

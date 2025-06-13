@@ -321,7 +321,6 @@ body {
   transform: translateY(30px);
 }
 
-/* Animación para el detalle expandido usando react-transition-group */
 .expand-detail-enter {
   opacity: 0;
   transform: translateY(-30px);
