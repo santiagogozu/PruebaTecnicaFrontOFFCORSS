@@ -46,7 +46,9 @@ const ProductList: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/products");
+        const response = await fetch(
+          import.meta.env.VITE_API_BASE_URL + "/api/products"
+        );
         const data = await response.json();
 
         const mappedProducts = data.map((product: Product) => ({
