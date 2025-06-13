@@ -1,0 +1,134 @@
+.loading-container {
+  min-height: 200px;
+}
+
+.product-table th {
+  text-align: left;
+}
+
+.product-table th:nth-child(1) {
+  width: 15%;
+}
+
+.product-table th:nth-child(2) {
+  width: 25%;
+}
+
+.product-table th:nth-child(3) {
+  width: 15%;
+}
+
+.product-table th:nth-child(4) {
+  width: 25%;
+}
+
+.product-table th:nth-child(5) {
+  width: 20%;
+}
+
+.product-badge {
+  font-size: 0.8rem;
+}
+
+.items-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.product-image {
+  width: 15rem;
+  /* height: 40px; */
+  object-fit: cover;
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
+}
+
+.expanded-row-content {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #product-detail-print,
+  #product-detail-print * {
+    visibility: visible;
+  }
+  #product-detail-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.detail-expand-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 2rem 2rem 1.5rem 2rem;
+}
+
+.detail-expand-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .detail-expand-grid {
+    grid-template-columns: 300px 1fr;
+  }
+}
+
+.detail-expand-anim {
+  transition: opacity 0.3s, transform 0.3s;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.detail-expand-anim-enter {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.detail-expand-anim-leave {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Animación para el detalle expandido usando react-transition-group */
+.expand-detail-enter {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+.expand-detail-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.expand-detail-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.expand-detail-exit-active {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 300ms, transform 300ms;
+}

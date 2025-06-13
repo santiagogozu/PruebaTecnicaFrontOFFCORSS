@@ -28,7 +28,7 @@ export default function Login() {
       } else {
         Swal.fire("Error", "Correo o contraseña inválida", "error");
       }
-    } catch (err) {
+    } catch {
       Swal.fire("Error", "Correo o contraseña inválida", "error");
     }
   };

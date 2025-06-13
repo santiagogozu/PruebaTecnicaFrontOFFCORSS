@@ -1,30 +1,28 @@
-body {
+/* body {
   height: 100vh;
   margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #121212;
-}
+  background-color: #78ff95;
+} */
 
-.container {
+.login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background-color: #1e1e1e;
+  background-color: #7c0a0a;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
 }
 
-h2 {
+.login-container h2 {
   color: white;
   margin-bottom: 20px;
 }
 
-input {
+.login-container input {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
@@ -34,7 +32,7 @@ input {
   color: white;
 }
 
-button {
+.login-container button {
   width: 100%;
   padding: 10px;
   background-color: #007bff;
@@ -45,6 +43,7 @@ button {
   font-size: 16px;
 }
 
-button:hover {
+.login-container button:hover {
   background-color: #0056b3;
 }
+

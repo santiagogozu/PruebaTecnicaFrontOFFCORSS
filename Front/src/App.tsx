@@ -1,7 +1,7 @@
 import {ApolloProvider} from "@apollo/client";
 import client from "./apollo";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Login from "./pages/Login";
+import Login from "./components/login/Login";
 import Dashboard from "./pages/Dashboard";
 import "bootstrap/dist/css/bootstrap.min.css";
 
