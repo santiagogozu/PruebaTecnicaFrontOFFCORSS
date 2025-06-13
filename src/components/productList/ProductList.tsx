@@ -42,7 +42,6 @@ const ProductList: React.FC = () => {
   const [itemsPerPage] = useState(5);
   const navigate = useNavigate();
 
-  // Obtener datos de la API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -86,7 +85,6 @@ const ProductList: React.FC = () => {
     fetchProducts();
   }, []);
 
-  // Filtrado de productos
   useEffect(() => {
     const filtered = products.filter(
       (product) =>
@@ -99,7 +97,6 @@ const ProductList: React.FC = () => {
     setCurrentPage(1);
   }, [searchTerm, products]);
 
-  // Paginación
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredProducts.slice(
@@ -108,7 +105,6 @@ const ProductList: React.FC = () => {
   );
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
-  // Selección de filas
   const handleRowSelect = (productId: string) => {
     const newSelectedRows = new Set(selectedRows);
     if (newSelectedRows.has(productId)) {
@@ -127,7 +123,6 @@ const ProductList: React.FC = () => {
     }
   };
 
-  // Exportar a CSV
   const exportToCSV = () => {
     const selectedProducts = products.filter((p) =>
       selectedRows.has(p.productId)

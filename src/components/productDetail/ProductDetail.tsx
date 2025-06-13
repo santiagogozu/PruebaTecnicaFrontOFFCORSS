@@ -37,7 +37,7 @@ const ProductDetail: React.FC = () => {
   useEffect(() => {
     if (!product && id) {
       setLoading(true);
-      fetch(`http://localhost:4000/api/products/${id}`)
+      fetch(import.meta.env.VITE_API_BASE_URL + `/api/products/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setProduct(data);
