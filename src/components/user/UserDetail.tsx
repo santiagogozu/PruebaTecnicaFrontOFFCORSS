@@ -4,6 +4,7 @@ import {useAuth} from "../../context/AuthContext";
 import {jwtDecode} from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import "../productList/ProductList.css";
+import type { AuthUser } from "../../interfaces/AuthUser";
 
 const UPDATE_USER = gql`
   mutation UpdateUser(
@@ -39,7 +40,7 @@ const UserDetail: React.FC = () => {
   const navigate = useNavigate();
   const {user, setUser} = useAuth();
   const [editMode, setEditMode] = useState(false);
-  const [form, setForm] = useState<any>(user);
+  const [form, setForm] = useState<AuthUser | null>(user);
   const [success, setSuccess] = useState<string | null>(null);
   const [updateUser] = useMutation(UPDATE_USER);
   const [loading, setLoading] = useState(true);
@@ -49,7 +50,7 @@ const UserDetail: React.FC = () => {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const decoded: any = jwtDecode(token);
+          const decoded = jwtDecode<AuthUser>(token);
           setUser({
             id: decoded.id,
             username: decoded.username,
@@ -95,11 +96,12 @@ const UserDetail: React.FC = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setForm({...form, [e.target.name]: e.target.value});
+    setForm(form ? {...form, [e.target.name]: e.target.value} : null);
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form) return;
     const {id, username, name, lastName, email, userType} = form;
     const {data} = await updateUser({
       variables: {id, username, name, lastName, email, userType},

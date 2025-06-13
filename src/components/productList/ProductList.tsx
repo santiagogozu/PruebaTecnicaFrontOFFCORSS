@@ -10,27 +10,8 @@ import {
 } from "lucide-react";
 import "./ProductList.css";
 import {useNavigate} from "react-router-dom";
+import type {Product} from "../../interfaces/Product";
 
-interface Product {
-  productId: string;
-  productName: string;
-  productTitle: string;
-  brand: string;
-  brandId: number;
-  brandImageUrl: string;
-  categoryId: string;
-  categories: string[];
-  description: string;
-  releaseDate: string;
-  Color: string[];
-  Género: string[];
-  linea: string[];
-  items: {itemId: string; images?: {imageUrl: string}[]}[];
-  itemsImages: string[];
-  cuidados?: string[];
-  origen?: string[];
-  link: string;
-}
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -49,8 +30,12 @@ const ProductList: React.FC = () => {
           import.meta.env.VITE_API_BASE_URL + "/api/products"
         );
         const data = await response.json();
+        type Item = {itemId: string; images?: {imageUrl: string}[]};
+        type ProductApi = Omit<Product, "items" | "itemsImages"> & {
+          items: Item[];
+        };
 
-        const mappedProducts = data.map((product: Product) => ({
+        const mappedProducts = (data as ProductApi[]).map((product) => ({
           productId: product.productId,
           productName: product.productName,
           productTitle: product.productTitle || product.productName,
@@ -64,9 +49,9 @@ const ProductList: React.FC = () => {
           Color: product.Color || [],
           Género: product.Género || [],
           linea: product.linea || [],
-          items: product.items.map((item: any) => ({itemId: item.itemId})),
+          items: product.items.map((item) => ({itemId: item.itemId})),
           itemsImages:
-            product.items[0]?.images?.map((img: any) => img.imageUrl) || [],
+            product.items[0]?.images?.map((img) => img.imageUrl) || [],
           cuidados: product.cuidados || [],
           origen: product.origen || [],
           link: product.link,

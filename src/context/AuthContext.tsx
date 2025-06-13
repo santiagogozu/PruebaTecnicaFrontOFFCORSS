@@ -1,14 +1,6 @@
 import React, {createContext, useContext, useState, useEffect} from "react";
 import {jwtDecode} from "jwt-decode";
-export interface AuthUser {
-  id: string;
-  username: string;
-  createDate: string;
-  name: string;
-  lastName: string;
-  email: string;
-  userType: string;
-}
+import type {AuthUser} from "../interfaces/AuthUser";
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -47,7 +39,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
   useEffect(() => {
     if (!user && token) {
       try {
-        const decoded: any = jwtDecode(token);
+        const decoded = jwtDecode<AuthUser>(token);
         setUser({
           id: decoded.id,
           username: decoded.username,

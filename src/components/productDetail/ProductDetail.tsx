@@ -2,34 +2,27 @@ import React, {useEffect, useState} from "react";
 import {useParams, useLocation, useNavigate} from "react-router-dom";
 import "../productList/ProductList.css";
 import "./ProductDetail.css";
-
-interface Product {
-  productId: string;
-  productName: string;
-  productTitle: string;
-  brand: string;
-  brandId: number;
-  brandImageUrl: string;
-  categoryId: string;
-  categories: string[];
-  description: string;
-  releaseDate: string;
-  Color: string[];
-  Género: string[];
-  linea: string[];
-  items: {itemId: string}[];
-  itemsImages: string[];
-  cuidados?: string[];
-  origen?: string[];
-  link: string;
-}
+import type {Product} from "../../interfaces/Product";
 
 const ProductDetail: React.FC = () => {
   const {id} = useParams<{id: string}>();
   const location = useLocation();
   const navigate = useNavigate();
+
+  function getProductFromState(state: unknown): Product | null {
+    if (
+      state &&
+      typeof state === "object" &&
+      "product" in state &&
+      typeof (state as {product?: unknown}).product === "object"
+    ) {
+      return (state as {product: Product}).product;
+    }
+    return null;
+  }
+
   const [product, setProduct] = useState<Product | null>(
-    (location.state && (location.state as any).product) || null
+    getProductFromState(location.state) || null
   );
   const [loading, setLoading] = useState(!product);
   const [error, setError] = useState<string | null>(null);
