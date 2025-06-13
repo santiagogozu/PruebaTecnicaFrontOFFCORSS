@@ -25,7 +25,7 @@ interface Product {
   Color: string[];
   Género: string[];
   linea: string[];
-  items: {itemId: string}[];
+  items: {itemId: string; images?: {imageUrl: string}[]}[];
   itemsImages: string[];
   cuidados?: string[];
   origen?: string[];
