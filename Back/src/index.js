@@ -64,7 +64,7 @@ dotenv.config();
     }
   });
 
-  await sequelize.sync({alter: true});
+  await sequelize.sync();
 
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {

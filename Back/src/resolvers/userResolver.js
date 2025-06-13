@@ -6,8 +6,8 @@ const resolvers = {
     getUsers: async () => {
       return await User.findAll();
     },
-    login: async (_, {correo, password}) => {
-      const user = await User.findOne({where: {correo}});
+    login: async (_, {username, password}) => {
+      const user = await User.findOne({where: {username}});
       if (!user) throw new Error("Usuario no encontrado");
       const isValid = await bcrypt.compare(password, user.password);
       if (!isValid) throw new Error("Contraseña incorrecta");
@@ -15,14 +15,31 @@ const resolvers = {
     },
   },
   Mutation: {
-    createUser: async (_, {correo, password}) => {
+    createUser: async (
+      _,
+      {username, name, lastName, email, userType, password}
+    ) => {
       const hash = await bcrypt.hash(password, 10);
-      return await User.create({correo, password: hash});
+      return await User.create({
+        username,
+        name,
+        lastName,
+        email,
+        userType,
+        password: hash,
+      });
     },
-    updateUser: async (_, {id, correo, password}) => {
+    updateUser: async (
+      _,
+      {id, username, name, lastName, email, userType, password}
+    ) => {
       const user = await User.findByPk(id);
       if (!user) throw new Error("Usuario no encontrado");
-      if (correo) user.correo = correo;
+      if (username) user.username = username;
+      if (name) user.name = name;
+      if (lastName) user.lastName = lastName;
+      if (email) user.email = email;
+      if (userType) user.userType = userType;
       if (password) user.password = await bcrypt.hash(password, 10);
       await user.save();
       return user;

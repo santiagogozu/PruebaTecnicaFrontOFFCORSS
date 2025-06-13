@@ -2,17 +2,37 @@ import {gql} from "apollo-server-express";
 const typeDefs = gql`
   type User {
     id: ID!
-    correo: String!
+    username: String!
+    createDate: String!
+    name: String!
+    lastName: String!
+    email: String!
+    userType: String!
   }
 
   type Query {
     getUsers: [User]
-    login(correo: String!, password: String!): String
+    login(username: String!, password: String!): String
   }
 
   type Mutation {
-    createUser(correo: String!, password: String!): User
-    updateUser(id: ID!, correo: String, password: String): User
+    createUser(
+      username: String!
+      name: String!
+      lastName: String!
+      email: String!
+      userType: String!
+      password: String!
+    ): User
+    updateUser(
+      id: ID!
+      username: String
+      name: String
+      lastName: String
+      email: String
+      userType: String
+      password: String
+    ): User
     deleteUser(id: ID!): Boolean
   }
 `;

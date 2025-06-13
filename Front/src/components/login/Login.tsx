@@ -7,21 +7,25 @@ import {Container, Row, Col, Card, Form, Button} from "react-bootstrap";
 import "./Login.css";
 
 const LOGIN = gql`
-  query Login($correo: String!, $password: String!) {
-    login(correo: $correo, password: $password)
+  query Login($userName: String!, $password: String!) {
+    login(username: $userName, password: $password)
   }
 `;
 
 export default function Login() {
   const [login] = useLazyQuery(LOGIN);
   const navigate = useNavigate();
-  const [correo, setCorreo] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
+    console.log("Entra a handleLogin");
+
     e.preventDefault();
     try {
-      const response = await login({variables: {correo, password}});
+      const response = await login({variables: {userName, password}});
+      console.log("response ---- ", response);
+
       const token = response.data?.login;
       if (token) {
         navigate("/dashboard");
@@ -50,10 +54,9 @@ export default function Login() {
               <Form onSubmit={handleLogin}>
                 <Form.Group className="mb-3">
                   <Form.Control
-                    type="email"
                     placeholder="Correo electrónico"
-                    value={correo}
-                    onChange={(e) => setCorreo(e.target.value)}
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
                     className="py-2"
                   />
                 </Form.Group>
