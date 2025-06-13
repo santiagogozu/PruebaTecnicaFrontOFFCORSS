@@ -340,3 +340,50 @@ body {
   transform: translateY(30px);
   transition: opacity 300ms, transform 300ms;
 }
+
+.user-detail-container {
+  max-width: 600px;
+}
+
+.user-detail-title {
+  font-size: 2rem;
+}
+
+.user-detail-success {
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  background: #bbf7d0;
+  color: #166534;
+  text-align: center;
+}
+
+.user-detail-form {
+  background: #f1f5f9;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.user-detail-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.user-detail-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: space-between;
+}
+
+.user-detail-cancel {
+  background: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+.user-detail-back {
+  background: var(--primary) !important;
+  color: #fff !important;
+}

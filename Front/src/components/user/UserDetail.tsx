@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useMutation, gql} from "@apollo/client";
 import {useAuth} from "../../context/AuthContext";
 import {jwtDecode} from "jwt-decode";
+import {useNavigate} from "react-router-dom";
 import "../productList/ProductList.css";
 
 const UPDATE_USER = gql`
@@ -35,7 +36,8 @@ const UPDATE_USER = gql`
 `;
 
 const UserDetail: React.FC = () => {
-  const {user, setUser, logout} = useAuth();
+  const navigate = useNavigate();
+  const {user, setUser} = useAuth();
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState<any>(user);
   const [success, setSuccess] = useState<string | null>(null);
@@ -109,32 +111,13 @@ const UserDetail: React.FC = () => {
   };
 
   return (
-    <div className="product-list-container" style={{maxWidth: 600}}>
-      <h2 className="product-list-title" style={{fontSize: "2rem"}}>
+    <div className="product-list-container user-detail-container">
+      <h2 className="product-list-title user-detail-title">
         Detalle de Usuario
       </h2>
-      {success && (
-        <div
-          className="pa2 bg-light-green green mb3 tc"
-          style={{
-            borderRadius: "0.75rem",
-            marginBottom: "1.5rem",
-            fontWeight: 600,
-          }}
-        >
-          {success}
-        </div>
-      )}
-      <form
-        onSubmit={handleSave}
-        style={{
-          background: "#f1f5f9",
-          borderRadius: "1rem",
-          padding: "2rem",
-          boxShadow: "var(--shadow)",
-        }}
-      >
-        <div style={{display: "grid", gap: "1.25rem"}}>
+      {success && <div className="user-detail-success">{success}</div>}
+      <form onSubmit={handleSave} className="user-detail-form">
+        <div className="user-detail-grid">
           <div>
             <label className="db fw6 mb1">Username</label>
             <input
@@ -144,7 +127,6 @@ const UserDetail: React.FC = () => {
               onChange={handleChange}
               disabled={!editMode}
               required
-              style={{fontSize: "1rem"}}
             />
           </div>
           <div>
@@ -153,7 +135,6 @@ const UserDetail: React.FC = () => {
               className="input-reset ba b--black-20 pa2 br2 w-100"
               value={new Date(form.createDate).toLocaleString()}
               disabled
-              style={{fontSize: "1rem"}}
             />
           </div>
           <div>
@@ -165,7 +146,6 @@ const UserDetail: React.FC = () => {
               onChange={handleChange}
               disabled={!editMode}
               required
-              style={{fontSize: "1rem"}}
             />
           </div>
           <div>
@@ -177,7 +157,6 @@ const UserDetail: React.FC = () => {
               onChange={handleChange}
               disabled={!editMode}
               required
-              style={{fontSize: "1rem"}}
             />
           </div>
           <div>
@@ -189,7 +168,6 @@ const UserDetail: React.FC = () => {
               onChange={handleChange}
               disabled={!editMode}
               required
-              style={{fontSize: "1rem"}}
             />
           </div>
           <div>
@@ -201,48 +179,26 @@ const UserDetail: React.FC = () => {
               onChange={handleChange}
               disabled={!editMode}
               required
-              style={{fontSize: "1rem"}}
             />
           </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            gap: "1rem",
-            marginTop: "2rem",
-            justifyContent: "space-between",
-          }}
-        >
+        <div className="user-detail-actions">
           {!editMode ? (
             <button
               type="button"
               className="export-btn"
-              style={{padding: "0.5rem 1.5rem"}}
               onClick={() => setEditMode(true)}
             >
               Editar
             </button>
           ) : (
             <>
-              <button
-                type="submit"
-                className="export-btn"
-                style={{
-                  background: "var(--primary)",
-                  color: "#fff",
-                  padding: "0.5rem 1.5rem",
-                }}
-              >
+              <button type="submit" className="export-btn">
                 Guardar
               </button>
               <button
                 type="button"
-                className="export-btn"
-                style={{
-                  background: "#cbd5e1",
-                  color: "#334155",
-                  padding: "0.5rem 1.5rem",
-                }}
+                className="export-btn user-detail-cancel"
                 onClick={() => {
                   setEditMode(false);
                   setForm(user);
@@ -253,16 +209,10 @@ const UserDetail: React.FC = () => {
             </>
           )}
           <button
-            type="button"
-            className="export-btn"
-            style={{
-              background: "#ef4444",
-              color: "#fff",
-              padding: "0.5rem 1.5rem",
-            }}
-            onClick={logout}
+            onClick={() => navigate(-1)}
+            className="export-btn user-detail-back"
           >
-            Cerrar sesión
+            ← Volver
           </button>
         </div>
       </form>
