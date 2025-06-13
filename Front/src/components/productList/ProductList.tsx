@@ -243,7 +243,7 @@ const ProductList: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((product, index) => (
+            {currentItems.map((product) => (
               <tr key={product.productId}>
                 <td>
                   <input
