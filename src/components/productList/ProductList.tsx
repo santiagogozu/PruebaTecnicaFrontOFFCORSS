@@ -216,16 +216,7 @@ const ProductList: React.FC = () => {
         <table className="product-table">
           <thead>
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={
-                    selectedRows.size === currentItems.length &&
-                    currentItems.length > 0
-                  }
-                  onChange={handleSelectAll}
-                />
-              </th>
+              <th>Agregar informacion a CSV</th>
               <th>Id del producto</th>
               <th>Marca</th>
               <th>Titulo de producto</th>

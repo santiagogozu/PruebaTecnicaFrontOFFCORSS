@@ -157,13 +157,18 @@ const UserDetail: React.FC = () => {
         </div>
         <div className="user-detail-actions">
           {!editMode ? (
-            <button
-              type="button"
-              className="export-btn"
-              onClick={() => setEditMode(true)}
-            >
-              Editar
-            </button>
+            <div className="w-100 flex flex-direction-row justify-between">
+              <button
+                type="button"
+                className="export-btn"
+                onClick={() => setEditMode(true)}
+              >
+                Editar
+              </button>
+              <button onClick={() => navigate(-1)} className="export-btn">
+                Volver
+              </button>
+            </div>
           ) : (
             <>
               <button type="submit" className="export-btn">
@@ -181,12 +186,9 @@ const UserDetail: React.FC = () => {
               </button>
             </>
           )}
-          <button
-            onClick={() => navigate(-1)}
-            className="export-btn user-detail-back"
-          >
+          {/* <button onClick={() => navigate(-1)} className="export-btn">
             Volver
-          </button>
+          </button> */}
         </div>
       </form>
     </div>

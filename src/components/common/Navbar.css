@@ -19,12 +19,16 @@
   cursor: pointer;
   color: #ffe201;
   user-select: none;
-  width: 120px;
+  width: 120;
 }
 
 .navbar-oc__actions {
   display: flex;
   gap: 1rem;
+}
+
+.navbar-oc__logo{
+  width: 120px;
 }
 
 .navbar-oc__btn {
@@ -40,8 +44,13 @@
 
 .navbar-oc__btn:hover {
   background: var(--accent);
-  color: #f9f9e0;
+  color: #f7f7dd;
 }
+
+.navbar-oc__btn:hover svg {
+  stroke: #f7f7dd;
+}
+
 
 .navbar-oc__btn--logout {
   background: #ef4444;
