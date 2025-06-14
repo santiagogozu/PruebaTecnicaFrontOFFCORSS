@@ -21,6 +21,8 @@ const ProductList: React.FC = () => {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const [clickedBtn, setClickedBtn] = useState<string | null>(null);
+  const [modalImg, setModalImg] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -158,6 +160,14 @@ const ProductList: React.FC = () => {
     navigate(`/producto/${product.productId}`, {state: {product}});
   };
 
+  const handleAnimatedClick = (btn: string, action: () => void) => {
+    setClickedBtn(btn);
+    setTimeout(() => {
+      setClickedBtn(null);
+      action();
+    }, 120);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-96">
@@ -191,9 +201,15 @@ const ProductList: React.FC = () => {
           />
         </div>
         <button
-          onClick={exportToCSV}
+          onClick={() => handleAnimatedClick("export", exportToCSV)}
           disabled={selectedRows.size === 0}
-          className="export-btn"
+          className={`export-btn animated-btn${
+            clickedBtn === "export" ? " clicked" : ""
+          }`}
+          style={{
+            transition:
+              "transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s",
+          }}
         >
           <Download size={18} />
           Exportar CSV ({selectedRows.size})
@@ -239,12 +255,16 @@ const ProductList: React.FC = () => {
                   <img
                     src={product.brandImageUrl}
                     alt={product.brand}
-                    className="product-image"
+                    className="product-image zoom-on-hover"
                     style={{
                       width: "3rem",
                       height: "2rem",
                       objectFit: "contain",
                     }}
+                    onClick={() => setModalImg(product.brandImageUrl)}
+                    tabIndex={0}
+                    role="button"
+                    aria-label="Ver imagen grande"
                   />
                 </td>
                 <td>
@@ -287,15 +307,31 @@ const ProductList: React.FC = () => {
                     <img
                       src={product.itemsImages[0]}
                       alt={product.productName}
-                      className="product-image"
+                      className="product-image zoom-on-hover"
+                      onClick={() => setModalImg(product.itemsImages[0])}
+                      tabIndex={0}
+                      role="button"
+                      aria-label="Ver imagen grande"
                     />
                   )}
                 </td>
                 <td>
                   <button
-                    onClick={() => handleViewDetail(product)}
-                    className="actions-btn"
+                    onClick={() =>
+                      handleAnimatedClick(`view-${product.productId}`, () =>
+                        handleViewDetail(product)
+                      )
+                    }
+                    className={`actions-btn animated-btn${
+                      clickedBtn === `view-${product.productId}`
+                        ? " clicked"
+                        : ""
+                    }`}
                     title="Ver detalle"
+                    style={{
+                      transition:
+                        "transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s",
+                    }}
                   >
                     <Eye size={18} />
                   </button>
@@ -305,7 +341,28 @@ const ProductList: React.FC = () => {
           </tbody>
         </table>
       </div>
-
+      {/* Modal para imagen grande */}
+      {modalImg && (
+        <div
+          className="modal-img-overlay"
+          onClick={() => setModalImg(null)}
+          tabIndex={-1}
+        >
+          <div
+            className="modal-img-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img src={modalImg} alt="Vista grande" />
+            <button
+              className="modal-img-close"
+              onClick={() => setModalImg(null)}
+              aria-label="Cerrar"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
       {totalPages > 1 && (
         <div className="mt4 flex items-center justify-between">
           <div className="f6 gray">
@@ -315,16 +372,34 @@ const ProductList: React.FC = () => {
           </div>
           <div className="flex items-center">
             <button
-              onClick={() => setCurrentPage(1)}
+              onClick={() =>
+                handleAnimatedClick("first", () => setCurrentPage(1))
+              }
               disabled={currentPage === 1}
-              className="pa2 br2 ba b--light-gray disabled-o-50 disabled-not-allowed hover-bg-near-white mr1"
+              className={`pa2 br2 ba b--light-gray animated-btn${
+                clickedBtn === "first" ? " clicked" : ""
+              } disabled-o-50 disabled-not-allowed hover-bg-near-white mr1`}
+              style={{
+                transition:
+                  "transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s",
+              }}
             >
               <ChevronsLeft size={16} />
             </button>
             <button
-              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              onClick={() =>
+                handleAnimatedClick("prev", () =>
+                  setCurrentPage(Math.max(1, currentPage - 1))
+                )
+              }
               disabled={currentPage === 1}
-              className="pa2 br2 ba b--light-gray disabled-o-50 disabled-not-allowed hover-bg-near-white mr1"
+              className={`pa2 br2 ba b--light-gray animated-btn${
+                clickedBtn === "prev" ? " clicked" : ""
+              } disabled-o-50 disabled-not-allowed hover-bg-near-white mr1`}
+              style={{
+                transition:
+                  "transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s",
+              }}
             >
               <ChevronLeft size={16} />
             </button>
@@ -334,12 +409,22 @@ const ProductList: React.FC = () => {
               return (
                 <button
                   key={pageNumber}
-                  onClick={() => setCurrentPage(pageNumber)}
-                  className={`ph3 pv2 br2 ba mr1 ${
+                  onClick={() =>
+                    handleAnimatedClick(`page-${pageNumber}`, () =>
+                      setCurrentPage(pageNumber)
+                    )
+                  }
+                  className={`ph3 pv2 br2 ba mr1 animated-btn${
+                    clickedBtn === `page-${pageNumber}` ? " clicked" : ""
+                  } ${
                     pageNumber === currentPage
                       ? "bg-blue white b--blue"
                       : "b--light-gray hover-bg-near-white"
                   }`}
+                  style={{
+                    transition:
+                      "transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s",
+                  }}
                 >
                   {pageNumber}
                 </button>
@@ -347,17 +432,33 @@ const ProductList: React.FC = () => {
             })}
             <button
               onClick={() =>
-                setCurrentPage(Math.min(totalPages, currentPage + 1))
+                handleAnimatedClick("next", () =>
+                  setCurrentPage(Math.min(totalPages, currentPage + 1))
+                )
               }
               disabled={currentPage === totalPages}
-              className="pa2 br2 ba b--light-gray disabled-o-50 disabled-not-allowed hover-bg-near-white mr1"
+              className={`pa2 br2 ba b--light-gray animated-btn${
+                clickedBtn === "next" ? " clicked" : ""
+              } disabled-o-50 disabled-not-allowed hover-bg-near-white mr1`}
+              style={{
+                transition:
+                  "transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s",
+              }}
             >
               <ChevronRight size={16} />
             </button>
             <button
-              onClick={() => setCurrentPage(totalPages)}
+              onClick={() =>
+                handleAnimatedClick("last", () => setCurrentPage(totalPages))
+              }
               disabled={currentPage === totalPages}
-              className="pa2 br2 ba b--light-gray disabled-o-50 disabled-not-allowed hover-bg-near-white"
+              className={`pa2 br2 ba b--light-gray animated-btn${
+                clickedBtn === "last" ? " clicked" : ""
+              } disabled-o-50 disabled-not-allowed hover-bg-near-white`}
+              style={{
+                transition:
+                  "transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s",
+              }}
             >
               <ChevronsRight size={16} />
             </button>

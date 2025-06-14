@@ -1,5 +1,4 @@
-
-  #product-detail-print,
+#product-detail-print,
   #product-detail-print * {
     visibility: visible;
   }
@@ -27,4 +26,24 @@
 .gap-custom-s.flex-wrap > * {
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
+}
+.animated-btn {
+  transition: transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s;
+}
+.animated-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 16px rgba(30,64,175,0.10);
+}
+.animated-btn.clicked {
+  transform: scale(0.96);
+  box-shadow: 0 2px 8px rgba(30,64,175,0.04);
+}
+.zoom-on-hover {
+  transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s;
+  cursor: pointer;
+}
+.zoom-on-hover:hover {
+  transform: scale(1.12);
+  z-index: 2;
+  box-shadow: 0 8px 32px rgba(30,64,175,0.18);
 }

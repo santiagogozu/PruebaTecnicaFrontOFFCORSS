@@ -26,6 +26,16 @@ const ProductDetail: React.FC = () => {
   );
   const [loading, setLoading] = useState(!product);
   const [error, setError] = useState<string | null>(null);
+  const [clickedBtn, setClickedBtn] = useState<string | null>(null);
+  const [modalImg, setModalImg] = useState<string | null>(null);
+
+  const handleBtnClick = (btn: string, action: () => void) => {
+    setClickedBtn(btn);
+    setTimeout(() => {
+      setClickedBtn(null);
+      action();
+    }, 120);
+  };
 
   useEffect(() => {
     if (!product && id) {
@@ -55,23 +65,31 @@ const ProductDetail: React.FC = () => {
     <div className="product-list-container" id="product-detail-print">
       <div style={{display: "flex", gap: "1rem", marginBottom: "1.5rem"}}>
         <button
-          onClick={() => navigate(-1)}
-          className="export-btn"
+          onClick={() => handleBtnClick("volver", () => navigate(-1))}
+          className={`export-btn animated-btn${
+            clickedBtn === "volver" ? " clicked" : ""
+          }`}
           style={{
             background: "var(--primary)",
             color: "#fff",
             padding: "0.5rem 1.5rem",
+            transition:
+              "transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s",
           }}
         >
           ← Volver
         </button>
         <button
-          onClick={() => window.print()}
-          className="export-btn"
+          onClick={() => handleBtnClick("imprimir", () => window.print())}
+          className={`export-btn animated-btn${
+            clickedBtn === "imprimir" ? " clicked" : ""
+          }`}
           style={{
             background: "var(--accent)",
             color: "#0e7490",
             padding: "0.5rem 1.5rem",
+            transition:
+              "transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s",
           }}
         >
           🖨️ Imprimir
@@ -83,7 +101,7 @@ const ProductDetail: React.FC = () => {
             <img
               src={product.itemsImages[0]}
               alt={product.productName}
-              className="product-image"
+              className="product-image zoom-on-hover"
               style={{
                 width: "100%",
                 maxWidth: "350px",
@@ -91,6 +109,10 @@ const ProductDetail: React.FC = () => {
                 borderRadius: "1rem",
                 boxShadow: "var(--shadow)",
               }}
+              onClick={() => setModalImg(product.itemsImages[0])}
+              tabIndex={0}
+              role="button"
+              aria-label="Ver imagen grande"
             />
           )}
         </div>
@@ -271,13 +293,17 @@ const ProductDetail: React.FC = () => {
                     key={index}
                     src={img}
                     alt={`${product.productName} ${index + 1}`}
-                    className="product-image"
+                    className="product-image zoom-on-hover"
                     style={{
                       width: "3.5rem",
                       height: "3.5rem",
                       objectFit: "cover",
                       borderRadius: "0.5rem",
                     }}
+                    onClick={() => setModalImg(img)}
+                    tabIndex={0}
+                    role="button"
+                    aria-label="Ver imagen grande"
                   />
                 ))}
               </div>
@@ -285,6 +311,28 @@ const ProductDetail: React.FC = () => {
           </div>
         </div>
       </div>
+      {/* Modal para imagen grande */}
+      {modalImg && (
+        <div
+          className="modal-img-overlay"
+          onClick={() => setModalImg(null)}
+          tabIndex={-1}
+        >
+          <div
+            className="modal-img-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img src={modalImg} alt="Vista grande" />
+            <button
+              className="modal-img-close"
+              onClick={() => setModalImg(null)}
+              aria-label="Cerrar"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
