@@ -206,10 +206,6 @@ const ProductList: React.FC = () => {
           className={`export-btn animated-btn${
             clickedBtn === "export" ? " clicked" : ""
           }`}
-          style={{
-            transition:
-              "transform 0.12s cubic-bezier(.4,2,.6,1), box-shadow 0.12s",
-          }}
         >
           <Download size={18} />
           Exportar CSV ({selectedRows.size})

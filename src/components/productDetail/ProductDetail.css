@@ -47,3 +47,12 @@
   z-index: 2;
   box-shadow: 2px 2px 12px rgba(255,214,0,0.9);
 }
+
+.detail-container{
+  background: #fbfbfb;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  flex: 1 1 220px;
+  box-shadow: 0 4px 24px 0 rgba(34, 34, 34, 0.10);
+  margin-bottom: 1.5rem;
+}
