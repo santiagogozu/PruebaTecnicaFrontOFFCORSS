@@ -303,7 +303,6 @@ const ProductList: React.FC = () => {
           </tbody>
         </table>
       </div>
-      {/* Modal para imagen grande */}
       {modalImg && (
         <div
           className="modal-img-overlay"

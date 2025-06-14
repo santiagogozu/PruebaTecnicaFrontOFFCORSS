@@ -187,7 +187,6 @@ const ProductDetail: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* Modal para imagen grande */}
       {modalImg && (
         <div
           className="modal-img-overlay"

@@ -3,7 +3,6 @@ import client from "./apollo";
 import {HashRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import Login from "./components/login/Login";
 import Dashboard from "./pages/Dashboard";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import ProductDetail from "./components/productDetail/ProductDetail";
 import "tachyons/css/tachyons.min.css";
 import {AuthProvider} from "./context/AuthContext";
