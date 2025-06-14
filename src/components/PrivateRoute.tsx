@@ -5,7 +5,6 @@ import {useAuth} from "../context/AuthContext";
 function PrivateRoute({children}: React.PropsWithChildren<object>) {
   const {user, loading} = useAuth();
 
-  // Esperar mientras se verifica la autenticación
   if (loading) {
     return (
       <div
@@ -18,8 +17,6 @@ function PrivateRoute({children}: React.PropsWithChildren<object>) {
       </div>
     );
   }
-
-  // Solo redirigir después de que terminó de cargar
   return user ? children : <Navigate to="/login" />;
 }
 

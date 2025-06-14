@@ -21,8 +21,16 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="navbar-oc">
-      <div className="navbar-oc__brand" onClick={() => navigate("/dashboard")}>
+      {/* <div className="navbar-oc__brand" onClick={() => navigate("/dashboard")}>
         OFFCORSS
+      </div> */}
+      <div className="navbar-oc__brand">
+        <img
+          src="./img/logo.png"
+          alt="OFFCORSS Logo"
+          className="navbar-oc__logo"
+          onClick={() => navigate("/dashboard")}
+        />
       </div>
       <div className="navbar-oc__actions">
         {user && (

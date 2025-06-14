@@ -1,15 +1,21 @@
+/* 1. Importa la fuente al inicio del archivo */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --primary: #2563eb;
-  --primary-dark: #1e40af;
-  --accent: #22d3ee;
-  --bg: #f8fafc;
-  --border: #e5e7eb;
+  --primary: #f9f9f9
+  --primary-dark: #222222;    
+  --accent: #2d2d2d;          
+  --bg: #181818;              
+  --border: rgb(184, 184, 184);         
   --radius: 0.75rem;
-  --shadow: 0 4px 24px 0 rgba(30, 64, 175, 0.08);
+  --shadow: 0 4px 24px 0 rgba(34, 34, 34, 0.10);
 }
 
 body {
-  background: var(--bg);
+  /* background: var(--bg); */
+  background: #f1f1f1;
+  color: #fff;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
 .loading-container {
@@ -17,12 +23,13 @@ body {
 }
 
 .product-list-container {
-  background: #fff;
+  background: #fbfbfb;;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 2rem 1rem;
   margin: 2rem auto;
-  max-width: 1200px;
+  max-width: 80%;
+  color: #181818;
 }
 
 @media (max-width: 900px) {
@@ -62,14 +69,15 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font-size: 1rem;
-  background: #f1f5f9;
+  color: #5c5c5c;
   transition: border 0.2s;
 }
 
 .product-search input:focus {
   border-color: var(--primary);
   outline: none;
-  background: #fff;
+  background: #fffde7;
+  color: #181818;
 }
 
 .product-search svg {
@@ -77,7 +85,7 @@ body {
   left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #94a3b8;
+  color: #ffd600;
 }
 
 .export-btn {
@@ -85,31 +93,32 @@ body {
   align-items: center;
   gap: 0.5rem;
   background: var(--primary);
-  color: #fff;
+  color: #181818;
   border: none;
   border-radius: var(--radius);
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
 .export-btn:disabled {
-  background: #cbd5e1;
-  color: #64748b;
+  background: #bdbdbd;
+  color: #444;
   cursor: not-allowed;
 }
 
 .export-btn:not(:disabled):hover {
-  background: var(--primary-dark);
+  background: #fffde7;
+  color: #222222;
 }
 
 .responsive-table-container {
   width: 100%;
   overflow-x: auto;
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  /* box-shadow: var(--shadow); */
   background: #fff;
 }
 
@@ -123,14 +132,17 @@ body {
 .product-table th,
 .product-table td {
   padding: 1rem;
-  text-align: left;
+  text-align: center;
+  vertical-align: middle;
   border-bottom: 1px solid var(--border);
   font-size: 1rem;
 }
 
 .product-table th {
-  background: var(--primary);
-  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  background: var(--primary-dark);
+  color: var(--primary);
   font-weight: 700;
   letter-spacing: 1px;
   border-top-left-radius: var(--radius);
@@ -146,22 +158,22 @@ body {
 }
 
 .product-table tr:hover {
-  background: #f1f5f9;
+  background: #b3b2b23a;
 }
 
 .product-table .actions-btn {
   background: none;
   border: none;
-  color: var(--primary);
+  color: var(--primary-dark);
   padding: 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s, color 0.15s;
 }
 
 .product-table .actions-btn:hover {
   background: var(--accent);
-  color: #0e7490;
+  color: #ffd600;
 }
 
 .product-image {
@@ -169,8 +181,16 @@ body {
   height: 4rem;
   object-fit: cover;
   border-radius: 0.5rem;
-  border: 1px solid var(--border);
-  background: #f1f5f9;
+  border:none;
+  /* background: #232323; */
+}
+.product-logo {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border:none;
+  background: #fffefc;
+
 }
 
 @media (max-width: 700px) {
@@ -207,9 +227,15 @@ body {
   border-radius: 999px;
   font-size: 0.85em;
   font-weight: 600;
-  background: #334155;
+  background: #ffd600;
+  color: #181818;
   margin-right: 0.25em;
   margin-bottom: 0.25em;
+}
+
+.items {
+  background: #5e5e5e;
+  color: #fbfbfb;
 }
 
 @media (max-width: 500px) {
@@ -219,14 +245,15 @@ body {
 }
 
 .product-table th {
-  text-align: left;
+  text-align: center;
 }
 
 .product-table th:nth-child(1) {
-  width: 15%;
+  width: 5%;
 }
 
 .product-table th:nth-child(2) {
+  text-align: center;
   width: 25%;
 }
 
@@ -235,7 +262,7 @@ body {
 }
 
 .product-table th:nth-child(4) {
-  width: 25%;
+  width: 35%;
 }
 
 .product-table th:nth-child(5) {
@@ -247,7 +274,6 @@ body {
 }
 
 .items-container {
-  display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
 }
@@ -353,16 +379,17 @@ body {
   margin-bottom: 1.5rem;
   font-weight: 600;
   padding: 0.75rem 1rem;
-  background: #bbf7d0;
-  color: #166534;
+  background: #fffde7;
+  color: #222222;
   text-align: center;
 }
 
 .user-detail-form {
-  background: #f1f5f9;
+  background: #232323;
   border-radius: 1rem;
   padding: 2rem;
   box-shadow: var(--shadow);
+  color: #fff;
 }
 
 .user-detail-grid {
@@ -392,11 +419,11 @@ body {
 }
 .animated-btn:hover {
   transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 4px 16px rgba(30,64,175,0.10);
+  box-shadow: 0 4px 16px rgba(34,34,34,0.10);
 }
 .animated-btn.clicked {
   transform: scale(0.96);
-  box-shadow: 0 2px 8px rgba(30,64,175,0.04);
+  box-shadow: 0 2px 8px rgba(34,34,34,0.04);
 }
 
 .zoom-on-hover {
@@ -406,14 +433,14 @@ body {
 .zoom-on-hover:hover {
   transform: scale(1.12);
   z-index: 2;
-  box-shadow: 0 8px 32px rgba(30,64,175,0.18);
+  box-shadow: 0 8px 32px rgba(255,214,0,0.18);
 }
 
 .modal-img-overlay {
   position: fixed;
   z-index: 1000;
   inset: 0;
-  background: rgba(30,41,59,0.65);
+  background: rgba(24,24,24,0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -428,7 +455,7 @@ body {
   background: #fff;
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 8px 32px rgba(30,64,175,0.18);
+  box-shadow: 0 8px 32px rgba(34,34,34,0.18);
   max-width: 90vw;
   max-height: 90vh;
   display: flex;
@@ -439,7 +466,7 @@ body {
   max-width: 80vw;
   max-height: 70vh;
   border-radius: 0.75rem;
-  box-shadow: 0 2px 16px rgba(30,64,175,0.12);
+  box-shadow: 0 2px 16px rgba(34,34,34,0.12);
 }
 .modal-img-close {
   position: absolute;
@@ -448,11 +475,11 @@ body {
   background: transparent;
   border: none;
   font-size: 2.2rem;
-  color: #334155;
+  color: #181818;
   cursor: pointer;
   line-height: 1;
   transition: color 0.15s;
 }
 .modal-img-close:hover {
-  color: #0ea5e9;
+  color: #ffd600;
 }

@@ -188,7 +188,7 @@ const ProductList: React.FC = () => {
 
   return (
     <div className="product-list-container">
-      <h2 className="product-list-title">Listado de Productos OFFCORSS</h2>
+      <h2 className="product-list-title">Listado de Productos</h2>
 
       <div className="product-controls">
         <div className="product-search">
@@ -230,17 +230,17 @@ const ProductList: React.FC = () => {
                   onChange={handleSelectAll}
                 />
               </th>
-              <th>Product ID</th>
-              <th>Brand</th>
-              <th>Product Title</th>
+              <th>Id del producto</th>
+              <th>Marca</th>
+              <th>Titulo de producto</th>
               <th>Items</th>
-              <th>Images</th>
+              <th>Imagen</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {currentItems.map((product) => (
-              <tr key={product.productId}>
+              <tr className="product-row" key={product.productId}>
                 <td>
                   <input
                     type="checkbox"
@@ -255,48 +255,28 @@ const ProductList: React.FC = () => {
                   <img
                     src={product.brandImageUrl}
                     alt={product.brand}
-                    className="product-image zoom-on-hover"
-                    style={{
-                      width: "3rem",
-                      height: "2rem",
-                      objectFit: "contain",
-                    }}
+                    className="product-logo zoom-on-hover"
                     onClick={() => setModalImg(product.brandImageUrl)}
                     tabIndex={0}
                     role="button"
                     aria-label="Ver imagen grande"
                   />
                 </td>
-                <td>
+                <td style={{textAlign: "center"}}>
                   <div
                     title={product.productTitle}
                     style={{
-                      maxWidth: 180,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
+                      maxWidth: "80%",
+                      display: "inline-block",
                     }}
                   >
                     {product.productTitle}
                   </div>
                 </td>
                 <td>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "0.25rem",
-                    }}
-                  >
+                  <div>
                     {product.items.map((item, itemIndex) => (
-                      <span
-                        key={itemIndex}
-                        className="badge"
-                        style={{
-                          background: "#dbeafe",
-                          color: "#2563eb",
-                        }}
-                      >
+                      <span key={itemIndex} className="badge items">
                         {item.itemId}
                       </span>
                     ))}
