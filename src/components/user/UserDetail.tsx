@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import "../productList/ProductList.css";
 import type {AuthUser} from "../../interfaces/AuthUser";
 import {UPDATE_USER} from "../../graphql/userMutations";
+import "./UserDetail.css";
 
 const UserDetail: React.FC = () => {
   const navigate = useNavigate();
@@ -160,7 +161,7 @@ const UserDetail: React.FC = () => {
             <div className="w-100 flex flex-direction-row justify-between">
               <button
                 type="button"
-                className="export-btn"
+                className="accion-btn"
                 onClick={() => setEditMode(true)}
               >
                 Editar
@@ -171,9 +172,6 @@ const UserDetail: React.FC = () => {
             </div>
           ) : (
             <>
-              <button type="submit" className="export-btn">
-                Guardar
-              </button>
               <button
                 type="button"
                 className="export-btn user-detail-cancel"
@@ -184,11 +182,11 @@ const UserDetail: React.FC = () => {
               >
                 Cancelar
               </button>
+              <button type="submit" className="accion-btn">
+                Guardar
+              </button>
             </>
           )}
-          {/* <button onClick={() => navigate(-1)} className="export-btn">
-            Volver
-          </button> */}
         </div>
       </form>
     </div>

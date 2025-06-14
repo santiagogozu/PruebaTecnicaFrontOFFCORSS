@@ -1,0 +1,17 @@
+
+
+.accion-btn{
+  background: #ffdb00;
+  color: #302f2d;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.accion-btn:hover {
+  background: var(--accent);
+  color: #f7f7dd;
+}

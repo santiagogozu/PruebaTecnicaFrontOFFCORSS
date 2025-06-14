@@ -101,15 +101,6 @@ const ProductList: React.FC = () => {
     }
     setSelectedRows(newSelectedRows);
   };
-
-  const handleSelectAll = () => {
-    if (selectedRows.size === currentItems.length) {
-      setSelectedRows(new Set());
-    } else {
-      setSelectedRows(new Set(currentItems.map((p) => p.productId)));
-    }
-  };
-
   const exportToCSV = () => {
     const selectedProducts = products.filter((p) =>
       selectedRows.has(p.productId)
@@ -227,7 +218,11 @@ const ProductList: React.FC = () => {
           </thead>
           <tbody>
             {currentItems.map((product) => (
-              <tr className="product-row" key={product.productId}>
+              <tr
+                className="product-row"
+                key={product.productId}
+                onClick={() => handleRowSelect(product.productId)}
+              >
                 <td>
                   <input
                     type="checkbox"

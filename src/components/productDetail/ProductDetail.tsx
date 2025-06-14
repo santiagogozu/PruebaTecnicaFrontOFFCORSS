@@ -61,19 +61,9 @@ const ProductDetail: React.FC = () => {
 
   return (
     <div className="product-list-container-detail" id="product-detail-print">
-      <div
-        className="detail-expand-grid"
-        style={{alignItems: "flex-start", marginTop: "1.5rem"}}
-      >
+      <div className="detail-expand-grid mt-24">
         <div>
-          <div
-            style={{
-              display: "flex",
-              gap: "1rem",
-              marginBottom: "1.5rem",
-              justifyContent: "center",
-            }}
-          >
+          <div className="detail-btns">
             <button
               onClick={() => handleBtnClick("volver", () => navigate(-1))}
               className={`export-btn animated-btn${
@@ -92,22 +82,11 @@ const ProductDetail: React.FC = () => {
             </button>
           </div>
           {product.itemsImages.length > 0 && (
-            <div
-              style={{display: "flex", justifyContent: "center", width: "100%"}}
-            >
+            <div className="detail-img-main">
               <img
                 src={product.itemsImages[0]}
                 alt={product.productName}
-                className="product-image zoom-on-hover"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  width: "90%",
-                  maxWidth: "350px",
-                  height: "auto",
-                  borderRadius: "1rem",
-                  boxShadow: "var(--shadow)",
-                }}
+                className="zoom-on-hover detail-img-principal"
                 onClick={() => setModalImg(product.itemsImages[0])}
                 tabIndex={0}
                 role="button"
@@ -117,34 +96,9 @@ const ProductDetail: React.FC = () => {
           )}
         </div>
         <div>
-          <div
-            style={{
-              background: "#fbfbfb",
-              borderRadius: "1rem",
-              padding: "1.5rem",
-              marginBottom: "1.5rem",
-              boxShadow: "0 2px 8px rgba(30,64,175,0.04)",
-            }}
-          >
-            <h2
-              style={{
-                fontSize: "2rem",
-                fontWeight: 700,
-                color: "var(--primary-dark)",
-                marginBottom: "1rem",
-                marginTop: 0,
-              }}
-            >
-              {product.productName}
-            </h2>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "0.75rem",
-                marginBottom: "1rem",
-              }}
-            >
+          <div className="detail-container">
+            <h2 className="detail-title">{product.productName}</h2>
+            <div className="detail-grid-info">
               <div>
                 <strong>ID:</strong>{" "}
                 <span className="badge">{product.productId}</span>
@@ -154,15 +108,10 @@ const ProductDetail: React.FC = () => {
                 <img
                   src={product.brandImageUrl}
                   alt={product.brand}
-                  style={{
-                    width: "3rem",
-                    height: "2rem",
-                    objectFit: "contain",
-                    verticalAlign: "middle",
-                  }}
+                  className="detail-brand-img"
                 />
               </div>
-              <div style={{gridColumn: "1 / span 2"}}>
+              <div className="detail-span-2">
                 <strong>Título:</strong> {product.productTitle}
               </div>
               <div>
@@ -177,35 +126,20 @@ const ProductDetail: React.FC = () => {
               <div>
                 <strong>Línea:</strong> {product.linea?.join(", ")}
               </div>
-              <div style={{gridColumn: "1 / span 2"}}>
+              <div className="detail-span-2">
                 <strong>Fecha de Lanzamiento:</strong>{" "}
                 {new Date(product.releaseDate).toLocaleDateString()}
               </div>
             </div>
           </div>
           <div className="detail-container">
-            <h3 style={{fontWeight: 700, marginBottom: "1.5rem", marginTop: 0}}>
-              Descripción
-            </h3>
-            <p style={{color: "#334155", fontSize: "1rem", lineHeight: 1.6}}>
-              {product.description}
-            </p>
+            <h3 className="detail-section-title">Descripción</h3>
+            <p className="detail-description">{product.description}</p>
           </div>
           {product.cuidados && (
             <div className="detail-container">
-              <h3
-                style={{fontWeight: 700, marginBottom: "1.5rem", marginTop: 0}}
-              >
-                Cuidados
-              </h3>
-              <ul
-                style={{
-                  margin: 0,
-                  paddingLeft: "1.25rem",
-                  color: "#334155",
-                  fontSize: "1rem",
-                }}
-              >
+              <h3 className="detail-section-title">Cuidados</h3>
+              <ul className="detail-list">
                 {product.cuidados.map((cuidado, index) => (
                   <li key={index}>{cuidado}</li>
                 ))}
@@ -214,40 +148,18 @@ const ProductDetail: React.FC = () => {
           )}
           {product.origen && (
             <div className="detail-container">
-              <h3
-                style={{fontWeight: 700, marginBottom: "1.5rem", marginTop: 0}}
-              >
-                Origen
-              </h3>
-              <ul
-                style={{
-                  margin: 0,
-                  paddingLeft: "1.25rem",
-                  color: "#334155",
-                  fontSize: "1rem",
-                }}
-              >
+              <h3 className="detail-section-title">Origen</h3>
+              <ul className="detail-list">
                 {product.origen.map((orig, index) => (
                   <li key={index}>{orig}</li>
                 ))}
               </ul>
             </div>
           )}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1.5rem",
-              marginBottom: "1.5rem",
-            }}
-          >
+          <div className="detail-items-imgs">
             <div className="detail-container">
-              <h3
-                style={{fontWeight: 700, marginBottom: "1.5rem", marginTop: 0}}
-              >
-                Items
-              </h3>
-              <div style={{display: "flex", flexWrap: "wrap", gap: "0.5rem"}}>
+              <h3 className="detail-section-title">Items</h3>
+              <div className="detail-items-list">
                 {product.items.map((item, index) => (
                   <span key={index} className="badge">
                     {item.itemId}
@@ -256,24 +168,14 @@ const ProductDetail: React.FC = () => {
               </div>
             </div>
             <div className="detail-container">
-              <h3
-                style={{fontWeight: 700, marginBottom: "1.5rem", marginTop: 0}}
-              >
-                Imágenes
-              </h3>
-              <div style={{display: "flex", flexWrap: "wrap", gap: "0.5rem"}}>
+              <h3 className="detail-section-title">Imágenes</h3>
+              <div className="detail-imgs-list">
                 {product.itemsImages.map((img, index) => (
                   <img
                     key={index}
                     src={img}
                     alt={`${product.productName} ${index + 1}`}
-                    className="product-image zoom-on-hover"
-                    style={{
-                      width: "3.5rem",
-                      height: "3.5rem",
-                      objectFit: "cover",
-                      borderRadius: "0.5rem",
-                    }}
+                    className="product-image zoom-on-hover detail-img-thumb"
                     onClick={() => setModalImg(img)}
                     tabIndex={0}
                     role="button"
